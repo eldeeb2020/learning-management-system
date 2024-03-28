@@ -175,3 +175,7 @@ Route::controller(CourseController::class)->group(function(){
 
 
 Route::get('/instructor/login', [InstructorController::class, 'InstructorLogin'])->name('instructor.login');
+
+
+
+// new update for test 

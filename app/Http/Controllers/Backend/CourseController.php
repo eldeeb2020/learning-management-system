@@ -159,9 +159,6 @@ class CourseController extends Controller
                 'highestrated' => $request->highestrated,
     
             ]);
-
-
-            
         
 
         $notification = array(
@@ -171,6 +168,49 @@ class CourseController extends Controller
         return redirect()->route('all.course')->with($notification); 
 
     } //End method
+
+
+    public function UpdateCourseImage (Request $request){
+
+        $course_id = $request->id;
+        $oldImage = $request->old_image;
+
+
+        if ($request->file('course_image')){
+            $manager = new ImageManager (new Driver());
+            $name_gen = hexdec(uniqid()).'.'.$request->file('course_image')->getClientOriginalExtension();
+            $img = $manager->read($request->file('course_image'));
+            $img = $img->resize(370,246);
+
+            $img->toJpeg(80)->save(base_path('public/upload/course/thambnail/'.$name_gen));
+            $save_url = 'upload/course/thambnail/'.$name_gen;
+
+            
+    
+            
+
+        }
+
+        if (file_exists($oldImage)){
+            unlink($oldImage);
+        } 
+
+        Course::find($course_id)->update([
+            'course_image' => $save_url,
+            'updated_at' => Carbon::now(),
+        ]);
+
+
+
+        $notification = array(
+            'message' => 'Course Image Updated Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification); 
+
+
+
+    } // End Method
 
 
 }

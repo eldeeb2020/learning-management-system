@@ -174,10 +174,10 @@ function hideLectureContainer (button){
 
 <script>
     function saveLecture(courseId , sectionId , containerId){
-        const = lectureContainer = document.getElementById(containerId);
-        const = lectureTitle = lectureContainer.querySelector('input[name = "lec_title"]').value;
-        const = lectureContent = lectureContainer.querySelector('textarea').value;
-        const = lectureUrl = lectureContainer.querySelector('input[name = "lec_url"]').value;
+        const  lectureContainer = document.getElementById(containerId);
+        const  lectureTitle = lectureContainer.querySelector('input[name="lec_title"]').value;
+        const  lectureContent = lectureContainer.querySelector('textarea').value;
+        const  lectureUrl = lectureContainer.querySelector('input[name="lec_url"]').value;
 
         fetch('/save-lecture', {
             method : 'post',
@@ -195,13 +195,41 @@ function hideLectureContainer (button){
             }),
         })
 
-        .then(respnse => response.json())
+        .then(response => response.json())
         .then(data => {
-            consule.log(data);
+            console.log(data);
+
+            lectureContainer.style.display = 'none';
+
+            // Start Message 
+
+            const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  icon: 'success', 
+                  showConfirmButton: false,
+                  timer: 6000 
+            })
+            if ($.isEmptyObject(data.error)) {
+                    
+                    Toast.fire({
+                    type: 'success',
+                    title: data.success, 
+                    })
+
+            }else{
+               
+           Toast.fire({
+                    type: 'error',
+                    title: data.error, 
+                    })
+                }
+
+              // End Message   
         })
 
         .catch(error => {
-            consule.error(error);
+            console.error(error);
         });
 
 

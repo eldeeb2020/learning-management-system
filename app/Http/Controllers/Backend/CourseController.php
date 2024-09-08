@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Course_goal;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use App\Models\CourseLecture;
 use App\Models\CourseSection;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -314,6 +315,19 @@ class CourseController extends Controller
         return redirect()->back()->with($notification); 
 
     } //end method
+
+    public function SaveLecture(Request $request){
+        $lecture = new CourseLecture();
+        $lecture->course_id = $request->course_id;
+        $lecture->section_id = $request->section_id;
+        $lecture->lecture_title = $request->lecture_title;
+        $lecture->url = $request->lecture_url;
+        $lecture->content = $request->content;
+        $lecture->save();
+
+        return response()->json(['success' => 'Lecture Saved Successfully']);
+ 
+    } // end method
 
 
 }

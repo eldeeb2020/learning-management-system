@@ -139,13 +139,13 @@ function addLectureDiv(courseId, sectionId, containerId) {
     <div class="container">
 
     <h6>Lecture Title</h6>
-    <input type="text" class="form-control" placeholder="Enter Lectur Title">
+    <input type="text" name = "lec_title" class="form-control" placeholder="Enter Lectur Title">
     <textarea class="form-control tm-2" placeholder="Enter Lectur Content"></textarea>
     <h6 class="mt-3">Add Video Url</h6>
-    <input type="text" name="url" class="form-control" placeholder="Add URL">
+    <input type="text" name="lec_url" class="form-control" placeholder="Add URL">
 
-    <button class = "btn btn-primary mt-3" onclick = "" >Save Lecture</button>
-    <button class = "btn btn-secondary mt-3" onclick = "" >Cancel</button>
+    <button class = "btn btn-primary mt-3" onclick = "saveLecture('${courseId}' , '${sectionId}' , '${containerId}')" >Save Lecture</button>
+    <button class = "btn btn-secondary mt-3" onclick = "hideLectureContainer(this)" >Cancel</button>
 </div>
 
         `;
@@ -153,6 +153,59 @@ function addLectureDiv(courseId, sectionId, containerId) {
         lectureContainer.appendChild(newLectureDiv);
 
 }
+
+
+function hideLectureContainer (button){
+
+    const lectureDiv = button.closest('.lectureDiv');
+    
+    if (lectureDiv) {
+        // Option 1: Remove the lecture div from the DOM
+        lectureDiv.remove();
+        
+        // Option 2: Alternatively, hide the lecture div
+        // lectureDiv.style.display = 'none';
+    }
+}
+
+
+</script>
+
+
+<script>
+    function saveLecture(courseId , sectionId , containerId){
+        const = lectureContainer = document.getElementById(containerId);
+        const = lectureTitle = lectureContainer.querySelector('input[name = "lec_title"]').value;
+        const = lectureContent = lectureContainer.querySelector('textarea').value;
+        const = lectureUrl = lectureContainer.querySelector('input[name = "lec_url"]').value;
+
+        fetch('/save-lecture', {
+            method : 'post',
+            headers : {
+                'Content-Type' : 'application/json',
+                'X-CSRF-TOKEN' : '{{csrf_token()}}',
+
+            },
+            body : JSON.stringify({
+                course_id : courseId,
+                section_id : sectionId,
+                lecture_title : lectureTitle,
+                lecture_url : lectureUrl,
+                content : lectureContent,
+            }),
+        })
+
+        .then(respnse => response.json())
+        .then(data => {
+            consule.log(data);
+        })
+
+        .catch(error => {
+            consule.error(error);
+        });
+
+
+    }
 </script>
 
 @endsection

@@ -57,10 +57,12 @@
 
                                     <div class="container">
 
+                                    @foreach($item->lectures as $lecture)
+
                                         <div class="lectureDiv mb-3 d-flex align-items-center justify-content-between">
                                             <div>
                                                 <strong>
-                                                    Lecture Title
+                                                    {{$loop->iteration}} . {{$lecture->lecture_title}}
                                                 </strong>
                                             </div>
 
@@ -71,6 +73,8 @@
                                             </div>
 
                                         </div>
+
+                                    @endforeach
 
                                     </div>
 
@@ -146,11 +150,10 @@ function addLectureDiv(courseId, sectionId, containerId) {
 
     <button class = "btn btn-primary mt-3" onclick = "saveLecture('${courseId}' , '${sectionId}' , '${containerId}')" >Save Lecture</button>
     <button class = "btn btn-secondary mt-3" onclick = "hideLectureContainer(this)" >Cancel</button>
-</div>
-
-        `;
+</div>`;
 
         lectureContainer.appendChild(newLectureDiv);
+
 
 }
 
@@ -216,6 +219,7 @@ function hideLectureContainer (button){
                     type: 'success',
                     title: data.success, 
                     })
+                    window.setTimeout(function(){location.reload()},500)
 
             }else{
                

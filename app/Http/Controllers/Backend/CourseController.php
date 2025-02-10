@@ -329,5 +329,10 @@ class CourseController extends Controller
  
     } // end method
 
+    public function EditLecture($id){
+        $clecture = CourseLecture::find($id);
+        return view('instructor.courses..section.lecture.edit_course_lecture' , compact('clecture'));
+    }
+
 
 }
